@@ -20,7 +20,10 @@ namespace ImagesImporter4XamariniOS
                 Console.WriteLine("Please input the Asset Catalog Name:");
                 var assetCatalogName = Console.ReadLine();
 
-                GenerateResources(assetCatalogName, currentDirectory, images);
+                Console.WriteLine("Please input the Imageset Name:");
+                var imagesetName = Console.ReadLine();
+
+                GenerateResources(assetCatalogName, imagesetName, currentDirectory, images);
                 Console.WriteLine($"Completed! Please copy the {assetCatalogName}.xcassets folder into your root folder of your iOS project, and copy the content of the csproject.txt into your *.csproj file.");
                 Console.WriteLine("Press Enter to exit.");
                 var enter = Console.ReadKey();
@@ -37,27 +40,27 @@ namespace ImagesImporter4XamariniOS
             
         }
 
-        private static void GenerateResources(string assetCatalogName, DirectoryInfo currentDirectory, List<FileInfo> images)
+        private static void GenerateResources(string assetCatalogName, string imagesetName, DirectoryInfo currentDirectory, List<FileInfo> images)
         {
             var targetDirectory = currentDirectory.CreateSubdirectory($"{assetCatalogName}.xcassets");
+            var imageFolder = targetDirectory.CreateSubdirectory($"{imagesetName}.imageset");
+
             StringBuilder sb = new StringBuilder();
+            sb.Append($@"<ImageAsset Include=""{assetCatalogName}.xcassets\{imagesetName}.imageset\Contents.json"">");
+            sb.Append(Environment.NewLine);
+            sb.Append(@"<Visible>false</Visible>");
+            sb.Append(Environment.NewLine);
+            sb.Append(@"</ImageAsset>");
+            sb.Append(Environment.NewLine);
+
             foreach (var fileInfo in images.AsParallel())
             {
-                var imageFolder =
-                    targetDirectory.CreateSubdirectory($"{fileInfo.Name.Replace(fileInfo.Extension, "")}.imageset");
                 fileInfo.CopyTo(Path.Combine(imageFolder.FullName, fileInfo.Name));
                 string content = File.ReadAllText("Contents.json");
                 File.WriteAllText(Path.Combine(imageFolder.FullName, "Contents.json"),
                     content.Replace("{filename}", fileInfo.Name));
-                sb.Append(
-                    $@"<ImageAsset Include=""{assetCatalogName}.xcassets\{fileInfo.Name.Replace(fileInfo.Extension, "")}.imageset\Contents.json"">");
-                sb.Append(Environment.NewLine);
-                sb.Append(@"<Visible>false</Visible>");
-                sb.Append(Environment.NewLine);
-                sb.Append(@"</ImageAsset>");
-                sb.Append(Environment.NewLine);
-                sb.Append(
-                    $@"<ImageAsset Include=""{assetCatalogName}.xcassets\{fileInfo.Name.Replace(fileInfo.Extension, "")}.imageset\{fileInfo.Name}"">");
+
+                sb.Append($@"<ImageAsset Include=""{assetCatalogName}.xcassets\{imagesetName}.imageset\{fileInfo.Name}"">");
                 sb.Append(Environment.NewLine);
                 sb.Append(@"<Visible>false</Visible>");
                 sb.Append(Environment.NewLine);

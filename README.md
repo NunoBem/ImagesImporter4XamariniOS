@@ -1,6 +1,11 @@
 # ImagesImporter4XamariniOS
 A simple console application to import plenty of images into the Xamarin.iOS project.
 
+## My alterations
+
+I needed to add icons quickly to the ios project. We have online platforms that generate the icon sizes and content.json, but not the csproj part. So I alter this project to work in only one imageset.
+
+
 ## Introduction
 
 I am developing an iOS application by Xamarin.iOS and the first challenging thing to me is how to add plenty of images into the Xamarin.iOS project. I am working on a small project which can convert currencies rates and I need to show a lot of flags for currencies. When I want to add images into the Xamarin.iOS project, I found it is so boring and Visual Studio does not provide us with a convenient way to add them.
