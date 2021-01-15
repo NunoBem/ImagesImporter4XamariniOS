@@ -46,7 +46,7 @@ namespace ImagesImporter4XamariniOS
             var imageFolder = targetDirectory.CreateSubdirectory($"{imagesetName}.imageset");
 
             StringBuilder sb = new StringBuilder();
-            sb.Append($@"<ImageAsset Include=""{assetCatalogName}.xcassets\{imagesetName}.imageset\Contents.json"">");
+            sb.Append($@"<ImageAsset Include=""{assetCatalogName}.xcassets\{imagesetName}.appiconset\Contents.json"">");
             sb.Append(Environment.NewLine);
             sb.Append(@"<Visible>false</Visible>");
             sb.Append(Environment.NewLine);
@@ -60,7 +60,7 @@ namespace ImagesImporter4XamariniOS
                 File.WriteAllText(Path.Combine(imageFolder.FullName, "Contents.json"),
                     content.Replace("{filename}", fileInfo.Name));
 
-                sb.Append($@"<ImageAsset Include=""{assetCatalogName}.xcassets\{imagesetName}.imageset\{fileInfo.Name}"">");
+                sb.Append($@"<ImageAsset Include=""{assetCatalogName}.xcassets\{imagesetName}.appiconset\{fileInfo.Name}"">");
                 sb.Append(Environment.NewLine);
                 sb.Append(@"<Visible>false</Visible>");
                 sb.Append(Environment.NewLine);
